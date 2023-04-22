@@ -39,17 +39,41 @@ def get_data(url):
     return(bytes_value)
   
 cache = {}
-cache['last_value'] = get_data(globus_url)
+cache['earlier_value'] = 0
+cache['last_value']   = get_data(globus_url)
+cache['earlier_time'] = 0
+cache['last_time']    = int(time.time())
+
+
+# If Globus web counter value hasn't changed, then estimate it to be
+#     <time since last reading> * <counter change rate>
+# Where:
+#     <counter change rate> = <recent change in value> / <recent change in seconds>
+#                           = (last_value - earlier_value)/ (last_time - earlier_time))
+#
 
 @app.route('/')
 def hello_world():
-    next_value = get_data(globus_url)
-    last_value = cache['last_value']
-    #next_time  = int(time.time())
-    if next_value == last_value:
-        next_value += 1
+    next_value    = get_data(globus_url)
+    next_time     = int(time.time())
+    last_value    = cache['last_value']
+    last_value    = cache['last_time']
+    earlier_value = cache['earlier_cache']
+    earlier_time  = cache['earlier_time']
+    
+    if next_value == last_value:  # If no change in web counter
+        # Set increment as above
+        #  Should check for not first time?
+        increment = int( ((this_time - last_time)*(last_value - earlier_value)/(last_time - earlier_time)) * 0.8 )
+        print(f'Increment: {increment} ({this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time}))')
+        next_value += increment
+    else:
+        print(f'Update: {next_value}')
+
+    cache['earlier_value'] = last_value
+    cache['earlier_time'] = last_time
     cache['last_value'] = next_value
-    print(f' Bytes: {next_value}')
+    cache['last_time']  = next_time
+    
     rv = f'{{"number": {next_value}}}'
-    print(f'Response: {rv}')
     return rv
