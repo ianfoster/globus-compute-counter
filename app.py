@@ -54,26 +54,26 @@ cache['last_time']     = int(time.time())
 
 @app.route('/')
 def hello_world():
-    next_value    = get_data(globus_url)
-    next_time     = int(time.time())
+    this_value    = get_data(globus_url)
+    this_time     = int(time.time())
     last_value    = cache['last_value']
     last_time     = cache['last_time']
     earlier_value = cache['earlier_value']
     earlier_time  = cache['earlier_time']
     
-    if next_value == last_value:  # If no change in web counter
+    if this_value == last_value:  # If no change in web counter
         # Set increment as above
         #  Should check for not first time?
         increment = int( ((this_time - last_time)*(last_value - earlier_value)/(last_time - earlier_time)) * 0.8 )
         print(f'Increment: {increment} ({this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time}))')
-        next_value += increment
+        this_value += increment
     else:
-        print(f'Update: {next_value}')
+        print(f'Update: {this_value}')
 
     cache['earlier_value'] = last_value
     cache['earlier_time']  = last_time
-    cache['last_value']    = next_value
-    cache['last_time']     = next_time
+    cache['last_value']    = this_value
+    cache['last_time']     = this_time
     
-    rv = f'{{"number": {next_value}}}'
+    rv = f'{{"number": {this_value}}}'
     return rv
