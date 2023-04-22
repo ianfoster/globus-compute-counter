@@ -57,7 +57,7 @@ def hello_world():
     next_value    = get_data(globus_url)
     next_time     = int(time.time())
     last_value    = cache['last_value']
-    last_value    = cache['last_time']
+    last_time     = cache['last_time']
     earlier_value = cache['earlier_value']
     earlier_time  = cache['earlier_time']
     
