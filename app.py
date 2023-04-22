@@ -25,6 +25,6 @@ def get_data(url):
 def hello_world():
     bytes = get_data(globus_url)
     print(f' Bytes: {bytes}')
-    response = {'number', bytes}
-    print(f'Response: {response}')
-    return response
+    rv = {'number', bytes}
+    print(f'Response: {rv}')
+    return rv
