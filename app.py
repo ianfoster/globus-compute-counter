@@ -40,9 +40,9 @@ def get_data(url):
   
 cache = {}
 cache['earlier_value'] = 0
-cache['last_value']   = get_data(globus_url)
-cache['earlier_time'] = 0
-cache['last_time']    = int(time.time())
+cache['earlier_time']  = 0
+cache['last_value']    = get_data(globus_url)
+cache['last_time']     = int(time.time())
 
 
 # If Globus web counter value hasn't changed, then estimate it to be
@@ -58,7 +58,7 @@ def hello_world():
     next_time     = int(time.time())
     last_value    = cache['last_value']
     last_value    = cache['last_time']
-    earlier_value = cache['earlier_cache']
+    earlier_value = cache['earlier_value']
     earlier_time  = cache['earlier_time']
     
     if next_value == last_value:  # If no change in web counter
@@ -71,9 +71,9 @@ def hello_world():
         print(f'Update: {next_value}')
 
     cache['earlier_value'] = last_value
-    cache['earlier_time'] = last_time
-    cache['last_value'] = next_value
-    cache['last_time']  = next_time
+    cache['earlier_time']  = last_time
+    cache['last_value']    = next_value
+    cache['last_time']     = next_time
     
     rv = f'{{"number": {next_value}}}'
     return rv
