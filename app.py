@@ -14,9 +14,11 @@ def get_data(url):
     data = json.loads(json_data)
 
     bytes_value = int(data['new']['bytes'])
+    print(f'Returned bytes_value: {bytes_value}')
     bytes_value /= 10 ** 9
     bytes_value %= 10 ** 7
-    print(f'get_data gives {bytes_value}')
+    bytes_value = int(bytes_value)
+    print(f'    extracted: {bytes_value}')
     return(bytes_value)
 
 @app.route('/')
