@@ -20,6 +20,8 @@ def get_data(url):
 
 @app.route('/')
 def hello_world():
-    # bytes = get_data(globus_url)
-    return 'Hello, World!'
-    #return {'Hello, World!', bytes}
+    bytes = get_data(globus_url)
+    print(f'Bytes: {bytes}')
+    response = {'number', bytes}
+    print(f'Response: {response}')
+    return response
