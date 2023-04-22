@@ -37,18 +37,19 @@ def get_data(url):
     bytes_value = int(bytes_value)
     print(f'    extracted: {bytes_value}')
     return(bytes_value)
-
-last_value = get_data(globus_url)
-last_time  = int(time.time())
+  
+cache = {}
+cache['last_value'] = get_data(globus_url)
 
 @app.route('/')
 def hello_world():
     next_value = get_data(globus_url)
-    next_time  = int(time.time())
+    last_value = cache['last_value']
+    #next_time  = int(time.time())
     if next_value == last_value:
         next_value += 1
-    print(f' Bytes at {next_time}: {next_value}')
+    cache['last_value'] = next_value
+    print(f' Bytes: {next_value}')
     rv = f'{{"number": {next_value}}}'
     print(f'Response: {rv}')
-    last_value = next_value
     return rv
