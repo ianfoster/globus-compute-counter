@@ -1,12 +1,11 @@
 from flask import Flask
 import json
 import requests
+import time
 
 app = Flask(__name__)
 
 globus_url = "https://transfer.api.globus.org/v0.10/private/web_stats"
-
-initial_values = 
 
 """
 Example:
@@ -40,13 +39,15 @@ def get_data(url):
     return(bytes_value)
 
 last_value = get_data(globus_url)
+last_time  = int(time.time())
 
 @app.route('/')
 def hello_world():
     next_value = get_data(globus_url)
+    next_time  = int(time.time())
     if next_value == last_value:
         next_value += 1
-    print(f' Bytes: {next_value}')
+    print(f' Bytes at {next_time}: {next_value}')
     rv = f'{{"number": {next_value}}}'
     print(f'Response: {rv}')
     last_value = next_value
