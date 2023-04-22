@@ -13,15 +13,16 @@ def get_data(url):
     json_data = json.dumps(data, indent=2)
     data = json.loads(json_data)
 
-    bytes_value = data['new']['bytes']
+    bytes_value = int(data['new']['bytes'])
     bytes_value /= 10 ** 9
     bytes_value %= 10 ** 7
-    print(int(bytes_value))
+    print(f'get_data gives {bytes_value}')
+    return(bytes_value)
 
 @app.route('/')
 def hello_world():
     bytes = get_data(globus_url)
-    print(f'Bytes: {bytes}')
+    print(f' Bytes: {bytes}')
     response = {'number', bytes}
     print(f'Response: {response}')
     return response
