@@ -5,22 +5,11 @@ import time
 
 app = Flask(__name__)
 
-globus_url = "https://transfer.api.globus.org/v0.10/private/web_stats"
+globus_url = "https://compute.api.globus.org/v2/stats"
 
 """
 Example:
-{
-  "new": {
-    "bytes": 1955402227052862012,
-    "files": 209318008246,
-    "time": "2023-04-22 22:47:02.125357"
-  },
-  "old": {
-    "bytes": 1955398391739215761,
-    "files": 209317930020,
-    "time": "2023-04-22 22:42:01.610209"
-  }
-}
+{"total_function_invocations":21889152}
 """
 
 def get_data(url):
@@ -30,18 +19,20 @@ def get_data(url):
     json_data = json.dumps(data, indent=2)
     data = json.loads(json_data)
 
-    bytes_value = int(data['new']['bytes'])
-    bytes_to_show = bytes_value/(10 ** 9)
-    bytes_to_show %= 10 ** 7
-    bytes_to_show = int(bytes_to_show)
-    # print(f'    extracted: {bytes_to_show} from {bytes_value}')
-    return(bytes_to_show)
+    value = int(data['total_function_invocations'])
+    to_show = value
+    to_show %= 10 ** 7
+    to_show = int(to_show)
+    print(f'    extracted: {to_show} from {value}')
+    return(to_show)
   
 cache = {}
 cache['last_value']    = get_data(globus_url)
 cache['last_time']     = int(time.time())
+"""
 cache['earlier_value'] = cache['last_value'] - 1
 cache['earlier_time']  = cache['last_time'] - 1
+"""
 cache['index']         = 0
 
 # If Globus web counter value hasn't changed, then estimate it to be
@@ -59,8 +50,10 @@ def hello_world():
     this_time     = int(time.time())
     last_value    = cache['last_value']
     last_time     = cache['last_time']
+    """
     earlier_value = cache['earlier_value']
     earlier_time  = cache['earlier_time']
+    """
     index         = cache['index']
     
     # print(f'== Round {cache["index"]}:')
@@ -68,6 +61,15 @@ def hello_world():
     # print(f'    Last: {last_value} at {last_time}') 
     # print(f'    New : {this_value} at {this_time}') 
     
+    if this_value == last_value:  # If no change in web counter
+        # Set increment as above
+        print(f'{index}: No change, still {this_value}')
+    elif this_value > last_value:
+        print(f'{index}: Increase by {this_value-last_value} to {this_value}')
+    else:  # this_value < last_value, which should not happen
+        print(f'{index}: AHEAD ERROR')
+    
+    """
     if this_value == last_value:  # If no change in web counter
         # Set increment as above
         increment = int( ((this_time - last_time)*(last_value - earlier_value)/(last_time - earlier_time)) * 0.8 )
@@ -78,11 +80,12 @@ def hello_world():
     else:  # this_value < last_value, which means that we increased by too much last time
         this_value = last_value + 1
         print(f'{index}: Ahead, so increment by 1 to  {this_value}')
-
+    
     cache['earlier_value'] = last_value
     cache['earlier_time']  = last_time
     cache['last_value']    = this_value
     cache['last_time']     = this_time
+    """
     cache['index']         = cache['index'] + 1
     
     rv = f'{{"number": {this_value}}}'
