@@ -39,10 +39,10 @@ def get_data(url):
     return(bytes_value)
   
 cache = {}
-cache['earlier_value'] = 0
-cache['earlier_time']  = 0
 cache['last_value']    = get_data(globus_url)
 cache['last_time']     = int(time.time())
+cache['earlier_value'] = cache['last_value'] - 1
+cache['earlier_time']  = cache['last_time'] - 1
 
 # If Globus web counter value hasn't changed, then estimate it to be
 #     <time since last reading> * <counter change rate>
@@ -63,14 +63,13 @@ def hello_world():
     if this_value == last_value:  # If no change in web counter
         # Set increment as above
         #  Should check for not first time?
-        print(f'Increment: {this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time}')
         increment = int( ((this_time - last_time)*(last_value - earlier_value)/(last_time - earlier_time)) * 0.8 )
-        print(f'  ... {increment}')
+        print(f'AAA Estimate: {increment} = ({this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time})*0.8')
         this_value += increment
     elif this_value > last_value:
-        print(f'Update: {this_value}')
+        print(f'BBB Update: {this_value}')
     else:
-        print(f'WAAAAH {this_value} --- {last_value}')
+        print(f'CCC {this_value} < {last_value}')
 
     cache['earlier_value'] = last_value
     cache['earlier_time']  = last_time
