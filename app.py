@@ -34,7 +34,7 @@ def get_data(url):
     bytes_to_show = bytes_value/(10 ** 9)
     bytes_to_show %= 10 ** 7
     bytes_to_show = int(bytes_to_show)
-    print(f'    extracted: {bytes_to_show} from {bytes_val}')
+    print(f'    extracted: {bytes_to_show} from {bytes_value}')
     return(bytes_to_show)
   
 cache = {}
