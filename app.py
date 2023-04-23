@@ -61,10 +61,10 @@ def hello_world():
     earlier_value = cache['earlier_value']
     earlier_time  = cache['earlier_time']
     
-    print(f'-- Round {cache['index']}:')
-    print(f'   Old : {earlier_value} at {earlier_time}') 
-    print(f'   Last: {last_value} at {last_time}') 
-    print(f'   New : {this_value} at {this_time}') 
+    print(f'== Round {cache["index"]}:')
+    print(f'    Old : {earlier_value} at {earlier_time}') 
+    print(f'    Last: {last_value} at {last_time}') 
+    print(f'    New : {this_value} at {this_time}') 
     
     if this_value == last_value:  # If no change in web counter
         # Set increment as above
