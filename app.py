@@ -51,6 +51,7 @@ cache['index']         = 0
 #     <counter change rate> = <recent change in value> / <recent change in seconds>
 #                           = (last_value - earlier_value)/ (last_time - earlier_time))
 #
+# Problem, however: If it keeps the same, 
 
 @app.route('/')
 def hello_world():
@@ -68,13 +69,13 @@ def hello_world():
     
     if this_value == last_value:  # If no change in web counter
         # Set increment as above
-        #  Should check for not first time?
         increment = int( ((this_time - last_time)*(last_value - earlier_value)/(last_time - earlier_time)) * 0.8 )
         print(f'AAA Estimate: {increment} = ({this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time})*0.8')
         this_value += increment
     elif this_value > last_value:
         print(f'BBB Update: {this_value}')
-    else:
+    else:  # this_value < last_value, which means that we increased by too much last time
+        this_value = last_value + 1
         print(f'CCC {this_value} < {last_value}')
 
     cache['earlier_value'] = last_value
