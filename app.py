@@ -70,7 +70,7 @@ def hello_world():
     elif this_value > last_value:
         print(f'Update: {this_value}')
     else:
-        print(f'WAAAAH' {this_value} --- {last_value}')
+        print(f'WAAAAH {this_value} --- {last_value}')
 
     cache['earlier_value'] = last_value
     cache['earlier_time']  = last_time
