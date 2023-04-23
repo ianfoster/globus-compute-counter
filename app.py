@@ -31,12 +31,11 @@ def get_data(url):
     data = json.loads(json_data)
 
     bytes_value = int(data['new']['bytes'])
-    print(f'Returned bytes_value: {bytes_value}')
-    bytes_value /= 10 ** 9
-    bytes_value %= 10 ** 7
-    bytes_value = int(bytes_value)
-    print(f'    extracted: {bytes_value}')
-    return(bytes_value)
+    bytes_to_show = bytes_value/(10 ** 9)
+    bytes_to_show %= 10 ** 7
+    bytes_to_show = int(bytes_to_show)
+    print(f'    extracted: {bytes_to_show} from {bytes_val}')
+    return(bytes_to_show)
   
 cache = {}
 cache['last_value']    = get_data(globus_url)
@@ -62,21 +61,21 @@ def hello_world():
     earlier_value = cache['earlier_value']
     earlier_time  = cache['earlier_time']
     
-    print(f'== Round {cache["index"]}:')
-    print(f'    Old : {earlier_value} at {earlier_time}') 
-    print(f'    Last: {last_value} at {last_time}') 
-    print(f'    New : {this_value} at {this_time}') 
+    # print(f'== Round {cache["index"]}:')
+    # print(f'    Old : {earlier_value} at {earlier_time}') 
+    # print(f'    Last: {last_value} at {last_time}') 
+    # print(f'    New : {this_value} at {this_time}') 
     
     if this_value == last_value:  # If no change in web counter
         # Set increment as above
         increment = int( ((this_time - last_time)*(last_value - earlier_value)/(last_time - earlier_time)) * 0.8 )
-        print(f'AAA Estimate: {increment} = ({this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time})*0.8')
+        print(f'No change, so using estimate: {increment} = ({this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time})*0.8')
         this_value += increment
     elif this_value > last_value:
-        print(f'BBB Update: {this_value}')
+        print(f'Updating with new value: {this_value}')
     else:  # this_value < last_value, which means that we increased by too much last time
         this_value = last_value + 1
-        print(f'CCC {this_value} < {last_value}')
+        print(f'Minimal increase: {this_value} < {last_value}')
 
     cache['earlier_value'] = last_value
     cache['earlier_time']  = last_time
