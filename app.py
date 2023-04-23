@@ -34,7 +34,7 @@ def get_data(url):
     bytes_to_show = bytes_value/(10 ** 9)
     bytes_to_show %= 10 ** 7
     bytes_to_show = int(bytes_to_show)
-    print(f'    extracted: {bytes_to_show} from {bytes_value}')
+    # print(f'    extracted: {bytes_to_show} from {bytes_value}')
     return(bytes_to_show)
   
 cache = {}
@@ -61,6 +61,7 @@ def hello_world():
     last_time     = cache['last_time']
     earlier_value = cache['earlier_value']
     earlier_time  = cache['earlier_time']
+    index         = cache['index']
     
     # print(f'== Round {cache["index"]}:')
     # print(f'    Old : {earlier_value} at {earlier_time}') 
@@ -70,13 +71,13 @@ def hello_world():
     if this_value == last_value:  # If no change in web counter
         # Set increment as above
         increment = int( ((this_time - last_time)*(last_value - earlier_value)/(last_time - earlier_time)) * 0.8 )
-        print(f'No change, so increase by estimated {increment} to {this_value+increment}') # ({this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time})*0.8')
+        print(f'{index}: No change, so increase by estimated {increment} to {this_value+increment}') # ({this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time})*0.8')
         this_value += increment
     elif this_value > last_value:
-        print(f'Increasing by {this_value-last_value} to {this_value}')
+        print(f'{index}: Increase by {this_value-last_value} to {this_value}')
     else:  # this_value < last_value, which means that we increased by too much last time
         this_value = last_value + 1
-        print(f'Ahead, so increment by just 1 to  {this_value}')
+        print(f'{index}: Ahead, so increment by 1 to  {this_value}')
 
     cache['earlier_value'] = last_value
     cache['earlier_time']  = last_time
