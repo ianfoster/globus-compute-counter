@@ -70,13 +70,13 @@ def hello_world():
     if this_value == last_value:  # If no change in web counter
         # Set increment as above
         increment = int( ((this_time - last_time)*(last_value - earlier_value)/(last_time - earlier_time)) * 0.8 )
-        print(f'No change, so using estimate: {increment} = ({this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time})*0.8')
+        print(f'No change, so increase by estimated {increment} to {this_value+increment}') # ({this_time} - {last_time})*({last_value} - {earlier_value})/({last_time} - {earlier_time})*0.8')
         this_value += increment
     elif this_value > last_value:
-        print(f'Updating with new value: {this_value}')
+        print(f'Increasing by {this_value-last_value} to {this_value}')
     else:  # this_value < last_value, which means that we increased by too much last time
         this_value = last_value + 1
-        print(f'Minimal increase: {this_value} < {last_value}')
+        print(f'Ahead, so increment by just 1 to  {this_value}')
 
     cache['earlier_value'] = last_value
     cache['earlier_time']  = last_time
