@@ -50,7 +50,8 @@ cache['index']         = 0
 #     <counter change rate> = <recent change in value> / <recent change in seconds>
 #                           = (last_value - earlier_value)/ (last_time - earlier_time))
 #
-# Problem, however: If it keeps the same, 
+# The web counter can stay the same for a while, so this can result in estimates getting ahead of reports. 
+# If so, then switch to increasing by just 1 at a time.
 
 @app.route('/')
 def hello_world():
