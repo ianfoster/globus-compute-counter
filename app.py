@@ -43,6 +43,7 @@ cache['last_value']    = get_data(globus_url)
 cache['last_time']     = int(time.time())
 cache['earlier_value'] = cache['last_value'] - 1
 cache['earlier_time']  = cache['last_time'] - 1
+cache['index']         = 0
 
 # If Globus web counter value hasn't changed, then estimate it to be
 #     <time since last reading> * <counter change rate>
@@ -60,6 +61,11 @@ def hello_world():
     earlier_value = cache['earlier_value']
     earlier_time  = cache['earlier_time']
     
+    print(f'-- Round {cache['index']}:')
+    print(f'   Old : {earlier_value} at {earlier_time}') 
+    print(f'   Last: {last_value} at {last_time}') 
+    print(f'   New : {this_value} at {this_time}') 
+    
     if this_value == last_value:  # If no change in web counter
         # Set increment as above
         #  Should check for not first time?
@@ -75,6 +81,7 @@ def hello_world():
     cache['earlier_time']  = last_time
     cache['last_value']    = this_value
     cache['last_time']     = this_time
+    cache['index']         = cache['index'] + 1
     
     rv = f'{{"number": {this_value}}}'
     return rv
