@@ -67,8 +67,10 @@ def hello_world():
         increment = int( ((this_time - last_time)*(last_value - earlier_value)/(last_time - earlier_time)) * 0.8 )
         print(f'  ... {increment}')
         this_value += increment
-    else:
+    elif this_value > last_value:
         print(f'Update: {this_value}')
+    else:
+        print(f'WAAAAH' {this_value} --- {last_value}')
 
     cache['earlier_value'] = last_value
     cache['earlier_time']  = last_time
